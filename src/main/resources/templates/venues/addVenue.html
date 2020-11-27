@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+
+<head>
+  <title>All venues</title>
+</head>
+<body>
+  <div layout:fragment="content">
+    <h1>Add venues</h1>
+
+	<form action = # th:action="@{/venues}" th:object="${venue}" th:method="post" >
+		<div class="form-group" th:classappend="${#fields.hasErrors('name')}? has-error">
+		
+		    <label for="name">Venue Name:</label>
+		    <br>
+		    <input type="text" min="1" id ="name" name="name" placeholder="Venue Name" >
+		    <p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">errors</p>
+		    <br><br>
+	
+		    <label for="capacity">Venue Capacity:</label>
+		    <br>
+		    <input type="number"  min="1" id ="capacity" name="capacity" >
+		    <p class="text-danger" th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}">errors</p>
+		    <br><br>
+	
+		  	<label for="address">Venue Address:</label>
+		    <br>
+		    <input type="text" min="1" id ="address" name="address" placeholder="Venue Address" >
+		    <p class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">errors</p>
+			<br><br>
+	
+			<label for="postcode">Venue Postcode:</label>
+		    <br>
+		    <input type="text" min="1" id ="postcode" name="postcode" placeholder="Venue Postcode" pattern = "[A-Za-z]{1,2}[0-9Rr][0-9A-Za-z]? [0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2}">
+		    <p class="text-danger" th:if="${#fields.hasErrors('postcode')}" th:errors="*{postcode}">errors</p>
+		  	<br><br>
+		</div>
+	  	<button class="btn btn-primary" type="submit"><i class="fas fa-bookmark" aria-hidden="true"></i> Save</button>
+	  	<a class="btn btn-warning" role="button" href="/venues/">Cancel</a>
+	</form>
+</div>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<head>
+  <meta charset="utf-8" />
+  <title>All events</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />
+  <style>
+	body { margin: 0; padding: 0; }
+	#map { position: absolute; width: 70%; height: 50% }
+  </style>
+</head>
+<body>
+  <div layout:fragment="content">
+
+    
+
+
+
+	<form action="/events/index/search" method="get">
+		<p>Event Search</p>
+		<input type = "text" placeholder="Search for an event..." autofocus="autofocus" name="sname"/>
+		<button type="submit">search</button>
+	</form>	<br>
+	<h1>Upcoming Events</h1>
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th><i class="fas fa-bolt"></i> Event</th>
+          <th><i class="fas fa-map-marker-alt"></i> Venue</th>
+          <th><i class="fas fa-calendar"></i> Date</th>
+          <th><i class="fas fa-clock"></i> Time</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      
+      <tbody>
+        <tr th:each="u : ${upcoming}">
+          <td><a th:text="${u.name}" th:href="@{/events/view_event_details/{id}(id=${u.id})}">My Event</a></td>
+          <td th:text="${u.venue.name}">Event venue</td>
+          <td th:text="${{u.date}}">Event date</td>
+          <td th:text="${{u.time}}">Event time</td>
+          <td th:text="${u.description}">Event description</td>
+          <td><a th:href="@{events/update/{id}(id=${u.id})}">Update</a></td>
+        </tr>
+      </tbody>
+
+    </table>
+
+    <h1> Previous Events </h1>
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th><i class="fas fa-bolt"></i> Event</th>
+          <th><i class="fas fa-map-marker-alt"></i> Venue</th>
+          <th><i class="fas fa-calendar"></i> Date</th>
+          <th><i class="fas fa-clock"></i> Time</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr th:each="p : ${previous}">
+          <td><a th:text="${p.name}" th:href="@{/events/view_event_details/{id}(id=${p.id})}">My Event</a></td>
+          <td th:text="${p.venue.name}">Event venue</td>
+          <td th:text="${{p.date}}">Event date</td>
+          <td th:text="${{p.time}}">Event time</td>
+          <td th:text="${p.description}">Event description</td>
+          <td><a th:href="@{events/update/{id}(id=${p.id})}">Update</a></td>
+        </tr>
+      </tbody>
+      
+    </table>
+    <a class = "btn btn-primary" role ="button" th:href="@{/events/addEvent}">Add New Event</a>
+    
+    <h1> Twitter Feed </h1>
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th> Date</th>
+          <th></th>
+        </tr>
+      </thead>
+      
+      <tbody>
+        <tr th:each="t : ${tweets}">
+          <td th:text="${t.getStatus().getCreatedAt()}">Date</td>
+          <td><a th:text="${t.getStatus().getText()}" th:href="@{{id}(id=${t.getUrl()})}">Text</a></td>	
+        </tr>
+      </tbody>
+      </table>
+    <div id="map"></div>
+    <script th:inline="javascript">
+		mapboxgl.accessToken = 'pk.eyJ1IjoicmFkaW5hLW1pdGV2YSIsImEiOiJjazk4NGh4YWsxOHloM21ydXltcHh1cHpsIn0.eAuXID0iYkCdIawPI6reNw';
+
+		
+		map = new mapboxgl.Map({container: 'map', // container id
+								style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+								center: [-2.2, 54.4], // starting position [lng, lat]
+								zoom: 3 // starting zoom
+							    }); 						    
+	</script>
+
+
+    <script th:inline="javascript"  th:each="event : ${upcoming}">
+
+    		/*<![CDATA[*/
+			    lon = /*[[${event.getLongitude()}]]*/ ;
+			    lat = /*[[${event.getLatitude()}]]*/ ;
+			    eventName =/*[[${event.getName()}]]*/;
+			/*]]>*/
+		var markers = new Array();
+    	var marker = new mapboxgl.Marker()
+				.setLngLat([lon, lat])
+				.addTo(map);	
+  		
+		markers.push(marker);
+		
+ 		map.on('click', function () {
+	            new mapboxgl.Popup()
+		            .setLngLat([lon, lat])
+		            .setHTML(eventName) 
+		            .addTo(map);
+                e.stopPropagation();		
+  		}); 
+	</script>
+	</div>
+</body>
+</html>

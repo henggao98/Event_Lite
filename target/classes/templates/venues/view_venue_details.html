@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<head>
+  <title>All events</title>
+</head>
+<body>
+  <div layout:fragment="content">
+  
+        <p>Venue <span th:text="${venue.getName()}">Name</span> </p>
+        <p th:text="${{venue.getAddress()}}">Address</p>
+        <p th:text="${{venue.getPostcode()}}">PostCode</p>
+        <p>Capacity: <span th:text="${venue.getCapacity()}">Capacity</span> </p>
+        </br>
+
+       <p>Events coming up ..</p>
+        <tr th:each="e : ${events}">
+          <p>Event <a th:text="${{e.name}}" th:href="@{/events/view_event_details/{id}(id=${e.id})}">Event</a></p>
+          <p th:text="${{e.date}}">Event date</p>
+          <p th:text="${{e.time}}">Event time</p>
+          <p>Venue <span th:text="${{e.venue}}">Event venue</span></p>
+          </br>
+        </tr>
+
+  </div>
+</body>
+</html>

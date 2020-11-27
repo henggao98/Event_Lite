@@ -1,2 +1,11 @@
-# Event_Lite
-A Spring-mvc project finished second year. A website to create events which consist of when, what and where.Achievements include basic implementation of show, add,  search, delete. Also, it includes api implementations of MapBox, Twitter.
+# COMP23412 EventLite
+## COMP23412 Software Engineering, University of Manchester, UK
+### Robert Haines, Markel Vigo, Mustafa Mustafa, Caroline Jay
+
+*This is the skeleton lab code for the team-based exercise.*
+
+See the instructions in Blackboard for more details.
+
+#### Licence
+
+BSD licenced. See Licence.md.

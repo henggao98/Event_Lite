@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<head>
+  <meta charset="utf-8" />
+  <title>Event details</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <script src="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v1.9.1/mapbox-gl.css" rel="stylesheet" />
+  <style>
+	body { margin: 0; padding: 0; }
+	#map { position: absolute; width: 50%; height: 80% }
+  </style>
+</head>
+<body>
+<div layout:fragment="content">
+  <div id="details">
+    <h1><span th:text="${event.getName()}">Name</span> </h1>
+    <p>Date: <span th:text="${{event.getDate()}}">Date</span></p>
+    <p>Time: <span th:text="${{event.getTime()}}">Time</span></p>
+    <p>Venue: <span th:text="${event.venue.getName()}">Venue name</span> </p>
+    <p>Details: <span th:text="${event.getDescription()}">Description</span></p>
+    <form th:action="@{/events/delete/{num}(num=${event.id})}" th:method="delete">
+      <button type="submit" class="btn btn-danger"><i class="fas fa-trash" aria-hidden="true"></i> Delete</button>
+      <br><br>
+    </form>
+  </div>
+  <div id="twitter" class="row">
+    <div class="panel-primary">
+      <div class="panel-body">
+      <form th:action="@{/events/post_tweet/{id}(id=${event.id})}"> 
+        <input type="text" th:name="event_tweet" th:placeholder="${event.name}" th:method="post">
+        <button type="submit" class="btn btn-primary"><i class="fas fa-bullhorn" aria-hidden="true"></i>Tweet</button>
+      	<br><br>
+      </form>
+      </div>
+    </div>
+  </div>
+  <div id="map" style="border:1px solid black">	
+  <script th:inline="javascript">
+    mapboxgl.accessToken = 'pk.eyJ1IjoicmFkaW5hLW1pdGV2YSIsImEiOiJjazk4NGh4YWsxOHloM21ydXltcHh1cHpsIn0.eAuXID0iYkCdIawPI6reNw';
+	  
+  /*<![CDATA[*/
+    var lon = /*[[${event.getLongitude()}]]*/ ;
+    var lat = /*[[${event.getLatitude()}]]*/ ;
+    var eventName =/*[[${event.getName()}]]*/;
+  /*]]>*/
+					
+  var map = new mapboxgl.Map({container: 'map', // container id
+	                          style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+	                          center: [lon, lat], // starting position [lng, lat]
+                              zoom: 9 // starting zoom
+						    }); 							    
+
+  var marker = new mapboxgl.Marker()
+                		   .setLngLat([lon, lat])
+                		   .addTo(map);	  					
+	
+  map.on('click', function () {
+    new mapboxgl.Popup()
+	            .setLngLat([lon, lat])
+	            .setHTML(eventName) 
+	            .addTo(map);
+                 e.stopPropagation();
+                 });
+  </script>
+  </div>
+</div>
+</body>
+</html>
+
