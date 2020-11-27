@@ -38,10 +38,29 @@ public class EventsController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String getAllEvents(Model model) throws TwitterException {
 		Iterable<Event> allEvents = eventService.findAll();
-		model.addAttribute("upcoming", allEvents);
+		List<Event> upcoming = new LinkedList<Event>();
+		List<Event> previous = new LinkedList<Event>();
+		Iterator<Event> eventIterator = allEvents.iterator();
+		Tweet tweet;
+
+		while (eventIterator.hasNext())
+		{
+			Event item = eventIterator.next();
+			if (item.isUpcoming())
+			{
+				upcoming.add(item);
+			}
+			else
+			{
+				previous.add(item);
+			}
+		}
+
+		model.addAttribute("upcoming", upcoming);
+		model.addAttribute("previous", previous);
 		return "events/index";
 	}
-	
+
 	@RequestMapping(value="/addEvent", method= RequestMethod.GET)
 	public String getAddNewEvent(Model model, HttpServletRequest request) {
 		if (!model.containsAttribute("event")) {

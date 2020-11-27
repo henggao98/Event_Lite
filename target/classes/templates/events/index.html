@@ -16,7 +16,7 @@
 <body>
   <div layout:fragment="content">
 
-    
+
 
 
 
@@ -40,7 +40,7 @@
       <tbody>
         <tr th:each="u : ${upcoming}">
           <td><a th:text="${u.name}" th:href="@{/events/view_event_details/{id}(id=${u.id})}">My Event</a></td>
-          <td th:text="${u.venue.name}">Event venue</td>
+          <td><a th:text="${u.venue.name}" th:href="@{/venues/view_venue_details/{id}(id=${u.venue.id})}">Event venue</a></td>
           <td th:text="${{u.date}}">Event date</td>
           <td th:text="${{u.time}}">Event time</td>
           <td th:text="${u.description}">Event description</td>
@@ -65,7 +65,7 @@
       <tbody>
         <tr th:each="p : ${previous}">
           <td><a th:text="${p.name}" th:href="@{/events/view_event_details/{id}(id=${p.id})}">My Event</a></td>
-          <td th:text="${p.venue.name}">Event venue</td>
+          <td><a th:text="${p.venue.name}" th:href="@{/venues/view_venue_details/{id}(id=${p.venue.id})}">Event venue</a></td>
           <td th:text="${{p.date}}">Event date</td>
           <td th:text="${{p.time}}">Event time</td>
           <td th:text="${p.description}">Event description</td>
