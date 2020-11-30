@@ -1,21 +1,18 @@
 package uk.ac.man.cs.eventlite.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import uk.ac.man.cs.eventlite.entities.Event;
+import uk.ac.man.cs.eventlite.entities.Venue;
+
 import java.util.Optional;
 
 //import java.io.InputStream;
 //import java.util.ArrayList;
 //import java.util.Iterator;
 //import java.util.List;
-
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.stereotype.Service;
-
-
-import uk.ac.man.cs.eventlite.entities.Event;
-import uk.ac.man.cs.eventlite.entities.Venue;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -60,7 +57,7 @@ public class EventServiceImpl implements EventService {
 	}
 	
 	@Override
-	public Iterable<Event> findByName(String name){
-		return eventRepository.findByNameOrderByDateAscTimeAsc(name);
+	public Iterable<Event> findByName(String name) {
+		return eventRepository.findByNameLikeOrderByDateAscTimeAsc(name);
 	}
 }

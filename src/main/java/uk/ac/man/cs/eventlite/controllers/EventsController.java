@@ -46,16 +46,25 @@ public class EventsController {
 		while (eventIterator.hasNext())
 		{
 			Event item = eventIterator.next();
-			if (item.isUpcoming())
-			{
+			if (item.isUpcoming()) {
 				upcoming.add(item);
-			}
-			else
-			{
+			} else {
 				previous.add(item);
 			}
 		}
-
+//		List<Status> tweets = twitter.getHomeTimeline();
+//		List<Tweet> fiveTweets = new LinkedList<Tweet>();
+//		int numTweetsDisp = tweets.size();
+//		if (numTweetsDisp > 5)
+//		{
+//			numTweetsDisp = 5;
+//		}
+//		for (int i = 0; i < numTweetsDisp; i++)
+//		{
+//			tweet = new Tweet(tweets.get(i));
+//			fiveTweets.add(tweet);
+//		}
+//		model.addAttribute("tweets", fiveTweets);
 		model.addAttribute("upcoming", upcoming);
 		model.addAttribute("previous", previous);
 		return "events/index";
@@ -137,35 +146,31 @@ public class EventsController {
 
 	@GetMapping("/view_event_details/{id}")
 	public String viewEventDetails(@PathVariable("id") long id, Model model) throws InterruptedException {
-	
+
 		Event event = eventService.findOne(id);	
 		model.addAttribute("event", event);
 		return "events/view_event_details";
 	}
-	
-	
-	
+
 
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
 	public String delete(@PathVariable("id") long id) {
 		eventService.deleteById(id);
-		
+
 		return "redirect:/events";
 	}
 
-	
-	@GetMapping(value = "/index/search")
-	public String  getNameSpecifiedEvents(@RequestParam(value="sname",required=false) String name, Model model) {
-		Iterable<Event> allEvents = eventService.findByName(name);
+
+	@GetMapping(value = "/index")
+	public String getNameSpecifiedEvents(@RequestParam(value = "sname", required = false) String name, Model model) {
+		Iterable<Event> allEvents = eventService.findByName("%" + name + "%");
 		List<Event> upcoming = new LinkedList<Event>();
 		List<Event> previous = new LinkedList<Event>();
 		Iterator<Event> eventIterator = allEvents.iterator();
-		
-		while (eventIterator.hasNext())
-		{
+
+		while (eventIterator.hasNext()) {
 			Event item = eventIterator.next();
-			if (item.isUpcoming())
-			{
+			if (item.isUpcoming()) {
 				upcoming.add(item);
 			}
 			else
