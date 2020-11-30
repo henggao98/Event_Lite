@@ -161,7 +161,7 @@ public class EventsController {
 	}
 
 
-	@GetMapping(value = "/index")
+	@GetMapping(value = "/")
 	public String getNameSpecifiedEvents(@RequestParam(value = "sname", required = false) String name, Model model) {
 		Iterable<Event> allEvents = eventService.findByName("%" + name + "%");
 		List<Event> upcoming = new LinkedList<Event>();
